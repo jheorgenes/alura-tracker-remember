@@ -20,5 +20,10 @@ npm run build
 npm run lint
 ```
 
+### Install Fontawesome
+```
+npm i --save-dev @fortawesome/fontawesome-free
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

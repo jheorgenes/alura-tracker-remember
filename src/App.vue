@@ -1,27 +1,53 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <main class="columns is-gapless is-multiline" :class="{'modo-escuro': modoEscuro }">
+    <div class="column is-one-quarter">
+      <BarraLateral @aoAlterarModo="alterarModo"/>
+    </div>
+    <div class="column is-three-quarters conteudo">
+      <Notificacoes />
+      <!-- Aqui vai a view correspondente -->
+      <router-view></router-view>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import BarraLateral from './components/BarraLateral.vue';
+import Notificacoes from './components/Notificacoes.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    BarraLateral,
+    Notificacoes
+  },
+  data () {
+    return {
+      modoEscuro: false
+    }
+  },
+  methods: {
+    alterarModo(modoEscuro: boolean): void {
+      this.modoEscuro = modoEscuro;
+    }
   }
 });
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+main {
+  --bg-primario: #fff;
+  --texto-primario: #000;
+}
+main.modo-escuro {
+  --bg-primario: #2b2d42;
+  --texto-primario: #ddd;
+}
+.lista {
+  padding: 1.25rem;
+}
+.conteudo {
+  background-color: var(--bg-primario);
 }
 </style>
