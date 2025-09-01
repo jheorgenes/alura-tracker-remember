@@ -42,18 +42,21 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from '@/store'; //Importando a função useStore própria que eu criei em store/index.ts
-import { EXCLUIR_PROJETO } from '@/store/tipo-mutacoes';
+import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acoes';
 
 export default defineComponent({
   name: 'Lista',
   methods: {
     excluir(id: string) {
-      // Executando uma ação na store usando o commit
-      this.store.commit(EXCLUIR_PROJETO, id);
+      // Executando uma action na store usando o dispatch
+      this.store.dispatch(REMOVER_PROJETO, id);
     }
   },
   setup() {
     const store = useStore(); //Buscando a instância do store
+
+    // O método dispatch dispara a Action escolhida
+    store.dispatch(OBTER_PROJETOS);
 
     // Retornando o estado reativo do Vuex para o componente Projetos.vue
     // Usando computed para garantir reatividade

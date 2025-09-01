@@ -2,7 +2,9 @@ import { INotificacao } from "@/interfaces/INotificacao";
 import IProjeto from "@/interfaces/IProjeto";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADICIONA_PROJETO, ALTERA_PROJETO, EXCLUIR_PROJETO, NOTIFICAR } from "./tipo-mutacoes";
+import { ALTERAR_PROJETO, CADASTRAR_PROJETO, OBTER_PROJETOS, REMOVER_PROJETO } from "./tipo-acoes";
+import { ADICIONA_PROJETO, ALTERA_PROJETO, DEFINIR_PROJETOS, EXCLUIR_PROJETO, NOTIFICAR } from "./tipo-mutacoes";
+import http from "@/http"
 
 /**
  * Definição do estado global da aplicação
@@ -44,6 +46,9 @@ export const store = createStore<Estado>({
     [EXCLUIR_PROJETO](state, id: string) {
       state.projetos = state.projetos.filter(p => p.id != id);
     },
+    [DEFINIR_PROJETOS](state, projetos: IProjeto[]) {
+      state.projetos = projetos; //Inserindo na lista os projetos obtidos do axios
+    },
     [NOTIFICAR](state, novaNotificacao: INotificacao) {
       novaNotificacao.id = new Date().getTime();
       state.notificacoes.push(novaNotificacao);
@@ -52,6 +57,24 @@ export const store = createStore<Estado>({
       setTimeout(() => {
         state.notificacoes = state.notificacoes.filter(n => n.id != novaNotificacao.id);
       }, 3000);
+    }
+  },
+  actions: {
+    [OBTER_PROJETOS]({ commit }) { //Extraíndo apenas o método commit dos parametros disponíveis das mutations
+      http.get('projetos')
+          .then(resposta => commit(DEFINIR_PROJETOS, resposta.data)); //Chamando a mutation para injetar a lista de projetos recuperada
+    },
+    [CADASTRAR_PROJETO](contexto, nomeDoProjeto: string) {
+      return http.post('/projetos', {
+         nome: nomeDoProjeto
+      });
+    },
+    [ALTERAR_PROJETO](contexto, projeto: IProjeto) {
+      return http.put(`/projetos/${projeto.id}`, projeto);
+    },
+    [REMOVER_PROJETO]({ commit }, id: string) { //Esse commit reaproveita o estado local para disparar uma nova mutation
+      return http.delete(`/projetos/${id}`)
+        .then(() => commit(EXCLUIR_PROJETO, id));
     }
   }
 });

@@ -18,8 +18,9 @@
 import { defineComponent } from 'vue';
 import { useStore } from '@/store'; //Importando a função useStore própria que eu criei em store/index.ts
 import IProjeto from '@/interfaces/IProjeto';
-import { ALTERA_PROJETO, ADICIONA_PROJETO } from '@/store/tipo-mutacoes';import { TipoNotificacao } from '@/interfaces/INotificacao';
+import { TipoNotificacao } from '@/interfaces/INotificacao';
 import useNotificador from '@/hooks/notificador';
+import { ALTERAR_PROJETO, CADASTRAR_PROJETO } from '@/store/tipo-acoes';
 
 
 export default defineComponent({
@@ -42,15 +43,23 @@ export default defineComponent({
   methods: {
     salvar() {
       if(this.id) { // Editando o projeto
-        this.store.commit(ALTERA_PROJETO, { id: this.id, nome: this.nomeDoProjeto });
-      } else { //Adicionando um novo projeto
-        // Adiciona o projeto no store através de uma mutation, chamada através do store.commit método
-        this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto);
+        this.store.dispatch(ALTERAR_PROJETO, { 
+          id: this.id, 
+          nome: this.nomeDoProjeto 
+        }).then(() => this.lidarComSucesso());
+      } else {
+        // Dispara a action para cadastrar um projeto (que fará um POST na API incluíndo o nome de projeto)
+        this.store.dispatch(CADASTRAR_PROJETO, this.nomeDoProjeto)
+          .then(() => {
+            this.lidarComSucesso();
+          });
       }
+    },
+    lidarComSucesso() {
       this.nomeDoProjeto = '';
       this.notificar(TipoNotificacao.SUCESSO, 'Excelente!', 'O projeto foi cadastrado com sucesso');
       this.$router.push('/projetos'); //Redireciona para a página de projetos
-    },
+    }
   },
   setup() {
     const store = useStore(); //Buscando a instância do store
