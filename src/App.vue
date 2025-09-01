@@ -11,28 +11,16 @@
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import BarraLateral from './components/BarraLateral.vue';
 import Notificacoes from './components/Notificacoes.vue';
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    BarraLateral,
-    Notificacoes
-  },
-  data () {
-    return {
-      modoEscuro: false
-    }
-  },
-  methods: {
-    alterarModo(modoEscuro: boolean): void {
-      this.modoEscuro = modoEscuro;
-    }
-  }
-});
+const modoEscuro = ref(false);
+
+function alterarModo(modo: boolean): void {
+  modoEscuro.value = modo;
+}
 </script>
 
 <style>

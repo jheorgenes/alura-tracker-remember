@@ -25,29 +25,21 @@
   </header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 
-export default defineComponent({
-  name: 'BarraLateral',
-  emits: ['aoAlterarModo'],
-  data() {
-    return {
-      modoEscuro: false
-    }
-  },
-  computed: {
-    textoBtn(): string {
-      return this.modoEscuro ? 'claro' : 'escuro'
-    }
-  },
-  methods: {
-    alterarModo () {
-      this.modoEscuro = !this.modoEscuro;
-      this.$emit('aoAlterarModo', this.modoEscuro);
-    }
-  }
-});
+const emit = defineEmits<{
+  (e: 'aoAlterarModo', modoEscuro: boolean): void
+}>();
+
+const modoEscuro = ref(false);
+
+const textoBtn = computed(() => modoEscuro.value ? 'claro': 'escuro');
+
+function alterarModo() {
+  modoEscuro.value = !modoEscuro.value;
+  emit('aoAlterarModo', modoEscuro.value)
+}
 </script>
 
 <style scoped>

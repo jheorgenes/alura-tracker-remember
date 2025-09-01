@@ -27,55 +27,47 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+import ITarefa from '@/interfaces/ITarefa';
+import { useStore } from '@/store';
+import { ALTERAR_TAREFA, CADASTRAR_TAREFA, OBTER_PROJETOS, OBTER_TAREFAS } from '@/store/tipo-acoes';
+import { computed, onMounted, ref } from 'vue';
 import Formulario from '../components/Formulario.vue';
 import Tarefa from '../components/Tarefa.vue';
 import Box from '../components/Box.vue';
-import { useStore } from '@/store';
-import { ALTERAR_TAREFA, CADASTRAR_TAREFA, OBTER_PROJETOS, OBTER_TAREFAS } from '@/store/tipo-acoes';
-import ITarefa from '@/interfaces/ITarefa';
 
-export default defineComponent({
-  name: 'Tarefas',
-  components: {
-    Formulario,
-    Tarefa,
-    Box
-  },
-  data() {
-    return {
-      tarefaSelecionada: null as ITarefa | null,
-    }
-  },
-  computed: {
-    semTarefas(): boolean {
-      return this.tarefas.length === 0;
-    }
-  },
-  methods: {
-    salvarTarefa(tarefa: ITarefa): void {
-      this.store.dispatch(CADASTRAR_TAREFA, tarefa);
-    },
-    selecionarTarefa(tarefa: ITarefa) {
-      this.tarefaSelecionada = tarefa;
-    },
-    fecharModal() {
-      this.tarefaSelecionada = null;
-    },
-    alterarTarefa() {
-      this.store.dispatch(ALTERAR_TAREFA, this.tarefaSelecionada)
-        .then(() => this.fecharModal());
-    }
-  },
-  setup() {
-    const store = useStore();
-    store.dispatch(OBTER_TAREFAS);
-    store.dispatch(OBTER_PROJETOS);
-    return { 
-      tarefas: computed(() => store.state.tarefa.tarefas),
-      store
-    };
+const tarefaSelecionada = ref<ITarefa | null>();
+
+const store = useStore();
+// Fazendo o dispatch direto quando o setup é chamado
+// store.dispatch(OBTER_TAREFAS);
+// store.dispatch(OBTER_PROJETOS);
+
+// lifecycle (apenas quando montar o componente no dom é que busca)
+onMounted(async () => {
+  await store.dispatch(OBTER_TAREFAS);
+  await store.dispatch(OBTER_PROJETOS);
+})
+
+const semTarefas = computed(() => tarefas.value.length === 0);
+const tarefas = computed(() => store.state.tarefa.tarefas);
+
+function salvarTarefa(tarefa: ITarefa): void {
+  store.dispatch(CADASTRAR_TAREFA, tarefa);
+}
+
+function selecionarTarefa(tarefa: ITarefa) {
+  tarefaSelecionada.value = tarefa;
+}
+
+function fecharModal() {
+  tarefaSelecionada.value = null;
+}
+
+async function alterarTarefa() {
+  if(tarefaSelecionada.value) {
+    await store.dispatch(ALTERAR_TAREFA, tarefaSelecionada.value);
+    fecharModal();
   }
-});
+}
 </script>

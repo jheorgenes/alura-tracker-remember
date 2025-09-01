@@ -4,24 +4,20 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
+// O Vue 3 trouxe o helper withDefaults para permitir informar um valor default
+const props = withDefaults(
+  defineProps<{ tempoEmSegundos?: number }>(),
+  { tempoEmSegundos: 0 }
+);
 
-export default defineComponent({
-  name: 'Cronometro',
-  props: {
-    tempoEmSegundos: {
-      type: Number,
-      default: 0
-    }
-  },
-  computed: {
-    tempoDecorrido(): string {
-      return new Date(this.tempoEmSegundos * 1000).toISOString().substring(11, 19);
-    }
-  }
-})
+const tempoDecorrido = computed(() => {
+  return new Date(props.tempoEmSegundos * 1000)
+    .toISOString()
+    .substring(11, 19)
+});
 </script>
 
 <style scoped>

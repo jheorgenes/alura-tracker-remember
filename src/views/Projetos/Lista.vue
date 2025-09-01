@@ -39,31 +39,17 @@
   </section>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
-import { useStore } from '@/store'; //Importando a função useStore própria que eu criei em store/index.ts
+<script setup lang="ts">
+import { useStore } from '@/store';
 import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acoes';
+import { computed } from 'vue';
 
-export default defineComponent({
-  name: 'Lista',
-  methods: {
-    excluir(id: string) {
-      // Executando uma action na store usando o dispatch
-      this.store.dispatch(REMOVER_PROJETO, id);
-    }
-  },
-  setup() {
-    const store = useStore(); //Buscando a instância do store
+const store = useStore();
+store.dispatch(OBTER_PROJETOS);
 
-    // O método dispatch dispara a Action escolhida
-    store.dispatch(OBTER_PROJETOS);
+function excluir(id: string) {
+  store.dispatch(REMOVER_PROJETO, id);
+}
 
-    // Retornando o estado reativo do Vuex para o componente Projetos.vue
-    // Usando computed para garantir reatividade
-    return { 
-      projetos: computed(() => store.state.projeto.projetos),
-      store
-    };
-  }
-});
+const projetos = computed(() => store.state.projeto.projetos);
 </script>

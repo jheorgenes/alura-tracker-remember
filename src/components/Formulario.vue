@@ -21,49 +21,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { key } from '@/store';
-import { computed, defineComponent } from 'vue';
-import { useStore } from 'vuex';
+<script setup lang="ts">
+import { useStore } from '@/store';
+import { computed, ref } from 'vue';
 import Temporizador from './Temporizador.vue';
 
-export default defineComponent({
-  name: 'Formulario',
-  emits: ['aoSalvarTarefa'],
-  components: {
-    Temporizador
-  },
-  data() {
-    return {
-      descricao: '',
-      idProjeto: ''
-    }
-  },
-  methods: {
-    salvarTarefa(tempoEmSegundos: number): void {
-      this.$emit('aoSalvarTarefa', { 
-        duracaoEmSegundos: tempoEmSegundos, 
-        descricao: this.descricao, 
-        projeto: this.projetos.find(proj => proj.id == this.idProjeto) 
-      });
-      this.descricao = '';
-    }
-  },
+const emit = defineEmits<{
+  (e: 'aoSalvarTarefa', payload: {
+    duracaoEmSegundos: number,
+    descricao: string,
+    projeto: { id: string; nome: string } | undefined
+  }): void
+}>();
 
-  /** 
-  * Retorna os projetos do estado global para serem utilizados no componente (como se fosse propriedades do data).
-  * Isso permite que o componente reaja a mudanças na store.
-  * Pra isso é necessário utilizar o computed, que cria uma propriedade reativa.
-  * Assim, quando o estado global mudar, a propriedade projetos também mudará automaticamente.
-  */
-  setup() {
-    
-    const store = useStore(key); // Importa a store do Vuex usando a key definida
-    return {
-      projetos: computed(() => store.state.projeto.projetos)
-    }
-  }
-});
+const store = useStore();
+const descricao = ref("");
+const idProjeto = ref("");
+const projetos = computed(() => store.state.projeto.projetos);
+
+function salvarTarefa(tempoEmSegundos: number): void {
+  // Chamando o método emit (antes chamado como this.$emit em options API)
+  emit('aoSalvarTarefa', { 
+    duracaoEmSegundos: tempoEmSegundos, 
+    descricao: descricao.value, 
+    projeto: projetos.value.find(proj => proj.id == idProjeto.value) 
+  });
+  descricao.value = '';
+}
 </script>
 
 <style scoped>

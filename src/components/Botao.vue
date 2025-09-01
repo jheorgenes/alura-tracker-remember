@@ -7,29 +7,16 @@
   </button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+const props = defineProps<{
+  texto: string
+  icone: string
+  desabilitado?: boolean
+}>();
 
-export default defineComponent({
-  name: 'Botao',
-  props: {
-    texto: {
-      type: String,
-      required: true
-    },
-    icone: {
-      type: String,
-      required: true
-    },
-    desabilitado: {
-      type: Boolean
-    }
-  },
-  emits: ['clicado'],
-  methods: {
-    clicado(): void {
-      this.$emit('clicado');
-    }
-  }
-});
+const emit = defineEmits<{ (e: 'clicado'): void }>();
+
+function clicado(): void {
+  emit('clicado');
+}
 </script>
