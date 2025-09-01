@@ -61,7 +61,7 @@ export default defineComponent({
     // Retornando o estado reativo do Vuex para o componente Projetos.vue
     // Usando computed para garantir reatividade
     return { 
-      projetos: computed(() => store.state.projetos),
+      projetos: computed(() => store.state.projeto.projetos),
       store
     };
   }

@@ -60,7 +60,7 @@ export default defineComponent({
     
     const store = useStore(key); // Importa a store do Vuex usando a key definida
     return {
-      projetos: computed(() => store.state.projetos)
+      projetos: computed(() => store.state.projeto.projetos)
     }
   }
 });
