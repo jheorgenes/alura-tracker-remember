@@ -17,7 +17,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from '@/store'; //Importando a função useStore própria que eu criei em store/index.ts
-import IProjeto from '@/interfaces/IProjeto';
 import { TipoNotificacao } from '@/interfaces/INotificacao';
 import useNotificador from '@/hooks/notificador';
 import { ALTERAR_PROJETO, CADASTRAR_PROJETO } from '@/store/tipo-acoes';
@@ -37,7 +36,6 @@ export default defineComponent({
   data() {
     return {
       nomeDoProjeto: '',
-      projetos: [] as IProjeto[]
     }
   },
   methods: {
