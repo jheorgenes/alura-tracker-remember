@@ -8,7 +8,8 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+
+defineProps<{
   texto: string
   icone: string
   desabilitado?: boolean

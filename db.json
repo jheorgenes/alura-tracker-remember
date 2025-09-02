@@ -11,13 +11,17 @@
     {
       "id": "5aa7",
       "nome": "Estudando padrões de Projeto"
+    },
+    {
+      "id": "fa47",
+      "nome": "Estudando Java"
     }
   ],
   "tarefas": [
     {
       "id": "1",
       "duracaoEmSegundos": 120,
-      "descricao": "Configuração de ambiente Vue",
+      "descricao": "Configuração de ambiente Vue 4",
       "projeto": {
         "id": 1,
         "nome": "Alura Tracker 3.0"
