@@ -4,17 +4,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { reactive } from 'vue';
 
-export default defineComponent({
-  name: 'Box',
-  data() {
-    return {
-      estilos: {
-        background: '#FAF0CA'
-      }
-    }
-  }
+// Quando existe um objeto ou array, o correto é utilizar reactive
+// O método ref é só para valores primitivos
+const estilos = reactive({
+  background: '#FAF0CA'
 });
 </script>

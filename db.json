@@ -9,15 +9,19 @@
       "nome": "ByteBank"
     },
     {
-      "id": "3",
-      "nome": "teste"
+      "id": "5aa7",
+      "nome": "Estudando padrões de Projeto"
+    },
+    {
+      "id": "fa47",
+      "nome": "Estudando Java"
     }
   ],
   "tarefas": [
     {
       "id": "1",
       "duracaoEmSegundos": 120,
-      "descricao": "Configuração de ambiente Vue",
+      "descricao": "Configuração de ambiente Vue 4",
       "projeto": {
         "id": 1,
         "nome": "Alura Tracker 3.0"
@@ -31,6 +35,38 @@
         "id": 1,
         "nome": "Alura Tracker 3.0"
       }
+    },
+    {
+      "id": "54b8",
+      "duracaoEmSegundos": 2,
+      "descricao": "Estudando padrões de Projeto",
+      "projeto": {
+        "id": "cf08",
+        "nome": "Teste"
+      }
+    },
+    {
+      "id": "7eae",
+      "duracaoEmSegundos": 6,
+      "descricao": "Executando tarefa Teste",
+      "projeto": {
+        "id": "1",
+        "nome": "Alura Tracker 3.0"
+      }
+    },
+    {
+      "id": "b171",
+      "duracaoEmSegundos": 4,
+      "descricao": "",
+      "projeto": {
+        "id": "2",
+        "nome": "ByteBank"
+      }
+    },
+    {
+      "id": "66ea",
+      "duracaoEmSegundos": 3,
+      "descricao": ""
     }
   ]
 }

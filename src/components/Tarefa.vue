@@ -14,31 +14,24 @@
   </Box>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script setup lang="ts">
 import Cronometro from './Cronometro.vue';
 import Box from './Box.vue';
-import ITarefa from '../interfaces/ITarefa';
+import ITarefa from '@/interfaces/ITarefa';
 
-export default defineComponent({
-  name: 'Tarefa',
-  emits: ['aoTarefaClicada'],
-  components: {
-    Cronometro,
-    Box
-  },
-  props: {
-    tarefa: {
-      type: Object as PropType<ITarefa>,
-      required: true
-    }
-  },
-  methods: {
-    tarefaClicada(): void {
-      this.$emit('aoTarefaClicada', this.tarefa);
-    }
-  }
-});
+// props
+const props = defineProps<{ tarefa: ITarefa }>();
+
+// emits
+// Também poderia ser feito assim: const emit = defineEmits(['aoTarefaClicada'])
+// Mas ao fazer isso, é possível passar qualquer coisa na prop emitida
+const emit = defineEmits<{
+  (e: 'aoTarefaClicada', tarefa: ITarefa): void
+}>();
+
+function tarefaClicada() {
+  emit('aoTarefaClicada', props.tarefa);
+}
 </script>
 
 <style scoped>
